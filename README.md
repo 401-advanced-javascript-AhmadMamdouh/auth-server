@@ -8,4 +8,4 @@ auth-server / for classes 11 -12- 13 - 14
 PORT - 3030
 
 ## UML
-![UML](UMLclass11.jpg)
+![UML](assets/UMLclass11.jpg)
