@@ -12,5 +12,5 @@ mongoose.connect(process.env.MONGODB_URL,{
     useUnifiedTopology : true,
 });
 
-server.start(process.env.PORT);
+server.start();
 

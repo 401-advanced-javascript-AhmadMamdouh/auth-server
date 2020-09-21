@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require('express');
-const userModelIns = require('../auth/models/users-model.js');
+const UserModelIns = require('../auth/models/users-model.js');
 const bassicAuth = require('./middleware/basic.js');
 
 const router = express.Router();
@@ -13,6 +13,7 @@ router.get('/users',usersHandler);
 
 
 function signUpHandler(req, res){
+    console.log(req.body)
     UserModelIns.save(req.body).then((data) => {
       const token = UserModelIns.generateToken(data);
       console.log({token});
