@@ -20,9 +20,13 @@ function signUpHandler(req, res){
       res.json({token});        
     }).catch(err => res.status(403).send(err));
   }
+
+  
   function signInHandler(req, res){
     return res.json({token:req.token, user: req.username});  
   }
+
+
   function usersHandler(req, res){
     return UserModelIns.get().then((list)=> {
       return res.json(list);

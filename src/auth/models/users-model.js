@@ -59,6 +59,11 @@ class UserModel extends Model {
       return Promise.reject();
     }
   }
+  
+  can(user , capability) {
+    return user.acl.capabilities.includes(capability);
+  }
 }
+
 
 module.exports = new UserModel(userSchema);
