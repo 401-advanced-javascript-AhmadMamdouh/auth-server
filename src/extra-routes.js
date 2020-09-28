@@ -11,23 +11,23 @@ router.put('/change',bearerAuth,permissions('update'),putHandler);
 router.delete('/remove',bearerAuth,permissions('delete'),deleteHandler);
 
 function bearerHandler(req,res){
-    res.json(req.user);
-};
+  res.json(req.user);
+}
 
 function readHandler(req , res){
-    res.send('Read Route OK !!');
+  res.send('Read Route OK !!');
 }
 
 function addHandler(req,res){
-    res.send('Add Rout OK !!');
+  res.send('Add Rout OK !!');
 }
 
 function putHandler(req,res){
-    res.send('Change Rout OK !!');
+  res.send('Change Rout OK !!');
 }
 
 function deleteHandler(req,res){
-    res.send('Delete Rout OK !!');
+  res.send('Delete Rout OK !!');
 }
 
 
