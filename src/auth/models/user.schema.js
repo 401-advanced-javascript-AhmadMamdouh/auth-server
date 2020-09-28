@@ -9,7 +9,7 @@ const user = mongoose.Schema({
   role:{
     type :String,
     default : 'user',
-    enum : ['user','writer','editor','admin']
+    enum : ['user','writer','editor','admin'],
   },
 },
 {toObject:{virtuals:true}, toJSON:{virtuals:true}});
