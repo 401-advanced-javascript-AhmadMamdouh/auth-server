@@ -10,10 +10,10 @@ module.exports = (req, res, next) => {
     if (auth === 'Bearer') {
       console.log('TOKEN', token);
       users.authenticateToken(token).then((validUser) => {
-          console.log('validUser ---->',validUser)
-          req.user = validUser;
-          next();
-        })
+        console.log('validUser ---->',validUser);
+        req.user = validUser;
+        next();
+      })
         .catch((e) => next('Invalid login', e.message));
     } else {
       next('Invalid auth header');
