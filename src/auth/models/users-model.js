@@ -13,6 +13,7 @@ class UserModel extends Model {
     super(userSchema);
   }
   save(record) {
+    console.log('record====>>>',record)
     return this.get({ username: record.username }).then((result) => {
       if (result.length === 0) {
         return bcrypt.hash(record.password, 5).then((hash) => {
