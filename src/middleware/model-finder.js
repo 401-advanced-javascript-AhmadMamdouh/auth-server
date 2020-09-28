@@ -3,9 +3,9 @@
 // require user model
 const userModel = require('../auth/models/users-model.js');
 
-function getModel(req, res, next) { 
+function getModel(req, res, next) {
   const model = req.params.model;
-  switch (model){
+  switch (model) {
   case 'signin':
     req.model = userModel;
     next();
@@ -14,7 +14,11 @@ function getModel(req, res, next) {
     req.model = userModel;
     next();
     return;
-  default: 
+  case 'oauth':
+    req.model = userModel;
+    next();
+    return;
+  default:
     next('invalid model');
     return;
   }

@@ -13,6 +13,7 @@ class UserModel extends Model {
     super(userSchema);
   }
   save(record) {
+    console.log('record====>>>',record)
     return this.get({ username: record.username }).then((result) => {
       if (result.length === 0) {
         return bcrypt.hash(record.password, 5).then((hash) => {
@@ -40,25 +41,32 @@ class UserModel extends Model {
     return token;
   }
 
-  authenticateToken(token) {
-    try {
 
-      const tokenObject = jwt.verify(token, SECRET);
-      console.log('tokenObject ====>',tokenObject);
 
-      return this.get({  iat: tokenObject.id }).then((result) => {
-        if (result.length === 0) {
-          console.log('User Id dose not exist');
-          return Promise.reject('User ID is not Found!!!');
-        } else {
-          console.log('User ID Already Exists', tokenObject);
-          return Promise.resolve(result[0]);
-        }
-      });
-    } catch (e) {
-      return Promise.reject();
-    }
-  }
+  // authenticateToken(token) {
+  //   try {
+
+  //     const tokenObject = jwt.verify(token, SECRET);
+  //     console.log('tokenObject ====>',tokenObject);
+
+  //     return this.get({  iat: tokenObject.id }).then((result) => {
+  //       if (result.length === 0) {
+  //         console.log('User Id dose not exist');
+  //         return Promise.reject('User ID is not Found!!!');
+  //       } else {
+  //         console.log('User ID Already Exists', tokenObject);
+  //         return Promise.resolve(result[0]);
+  //       }
+  //     });
+  //   } catch (e) {
+  //     return Promise.reject();
+  //   }
+  // }
+
+  // can(user , capability) {
+  //   return user.acl.capabilities.includes(capability);
+  // }
 }
+
 
 module.exports = new UserModel(userSchema);
