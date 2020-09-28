@@ -19,7 +19,7 @@ class UserModel extends Model {
           record.password = hash;
         }).then(() => {
           return this.create(record).then((created) => {
-            return created;
+            return created.populate('acl').execPopulate();
           });
         });
       } else {
@@ -27,43 +27,39 @@ class UserModel extends Model {
       }
     });
   }
-  authenticateBasic(user, pass) {
-    console.log('before', { username: user });
-    return this.get({ username: user }).then((result) => {
-      return bcrypt.compare(pass, result[0].password).then((valid) => {
+  authenticateBasic (user, pass) {
+    console.log('before', {username:user});
+    return this.get({username:user}).then((result)=> {
+      return bcrypt.compare(pass, result[0].password).then((valid)=> {
         return valid ? result : Promise.reject('wrong password');
       });
     });
   }
   generateToken(user) {
-    const token = jwt.sign({ username: user.username }, SECRET);
+    // capabilities === roles[user.role] ===== ['read'] OR ['read', 'create', 'update'];
+    const userData = {
+      exp: Math.floor(Date.now() / 1000) + (15 * 60),
+      algorithm: 'ES384',
+      username: user.username,
+      id: user._id,
+      capabilities: user.acl ? user.acl.capabilities : [],
+      type: user.type || 'user',
+    };
+    const token = jwt.sign(userData, SECRET);
     return token;
   }
-
   authenticateToken(token) {
     try {
-
-      const tokenObject = jwt.verify(token, SECRET);
-      console.log('tokenObject ====>',tokenObject);
-
-      return this.get({  iat: tokenObject.id }).then((result) => {
-        if (result.length === 0) {
-          console.log('User Id dose not exist');
-          return Promise.reject('User ID is not Found!!!');
-        } else {
-          console.log('User ID Already Exists', tokenObject);
-          return Promise.resolve(result[0]);
-        }
-      });
+      let tokenObject = jwt.verify(token, SECRET);
+      return this.get({ _id: tokenObject.id });
     } catch (e) {
-      return Promise.reject();
+      throw new Error('Invalid Token');
     }
   }
-  
-  can(user , capability) {
+
+  can(user, capability) {
     return user.acl.capabilities.includes(capability);
   }
 }
-
 
 module.exports = new UserModel(userSchema);
